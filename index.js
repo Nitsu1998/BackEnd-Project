@@ -31,3 +31,6 @@ usuario1.addPets('Hamster')
 usuario1.countPets()
 usuario1.addBook('The Lord of the rings', 'JRR Tolkien')
 usuario1.getBookNames()
+
+
+console.log('hola')
