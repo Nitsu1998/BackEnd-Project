@@ -1,4 +1,4 @@
-class Usuario {
+class User {
     constructor(name, lastName, books, pets) {
         this.name = name
         this.lastName = lastName
@@ -24,10 +24,10 @@ class Usuario {
     }
 }
 
-const usuario1 = new Usuario('Agustin', 'Micheletti', [{bookName: 'Harry Potter', bookAuthor: 'JK Rowling'}], ['Dog','Cat'])
+const user1 = new User('Agustin', 'Micheletti', [{bookName: 'Harry Potter', bookAuthor: 'JK Rowling'}], ['Dog','Cat'])
 
-usuario1.getFullName()
-usuario1.addPets('Hamster')
-usuario1.countPets()
-usuario1.addBook('The Lord of the rings', 'JRR Tolkien')
-usuario1.getBookNames()
+user1.getFullName()
+user1.addPets('Hamster')
+user1.countPets()
+user1.addBook('The Lord of the rings', 'JRR Tolkien')
+user1.getBookNames()
