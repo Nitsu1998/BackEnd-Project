@@ -21,7 +21,7 @@ class Container {
         await fs.promises.readFile(`./${this.fileName}`, "utf-8")
       );
       const product = data.find((product) => product.id === id);
-      if (product?.deleted || !product) {
+      if (product.deleted || !product) {
         return null;
       } else {
         return (product);
