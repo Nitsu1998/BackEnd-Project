@@ -10,7 +10,7 @@ class Container {
       const id = data.length + 1;
       data.push({ id: id, ...newProduct });
       await fs.promises.writeFile(`./${this.fileName}`, JSON.stringify(data));
-      console.log(`Added Product N°: ${id}`);
+      return (`Added Product N°: ${id}`);
     } catch (err) {
       console.log(err);
     }
@@ -22,9 +22,9 @@ class Container {
       );
       const product = data.find((product) => product.id === id);
       if (product?.deleted || !product) {
-        console.log(null);
+        return null;
       } else {
-        console.log(product);
+        return (product);
       }
     } catch (err) {
       console.log(err);
@@ -33,7 +33,7 @@ class Container {
   async getAll() {
     try {
       const data = await fs.promises.readFile(`./${this.fileName}`, "utf-8");
-      console.log(JSON.parse(data));
+      return (JSON.parse(data));
     } catch (err) {
       console.log(err);
     }
@@ -69,10 +69,36 @@ class Container {
 }
 
 const container1 = new Container("products.txt");
-(async () => {
-    await container1.getAll();
-    await container1.save({title: "God of War: Ragnarök", price: 15, img: "https://static.wikia.nocookie.net/godofwar/images/c/ca/Portada_God_of_War_Ragnarok.png/revision/latest?cb=20211008000423&path-prefix=es",});
-    await container1.getById(4);
-    await container1.deleteById(4);
-    await container1.deleteAll();
+
+const express = require("express")
+const app = express()
+const port = 8080
+
+app.get('/', (req, res) => {
+    res.send('Home')
+})
+
+app.get('/products', (req, res) => {
+  (async () => {
+    res.json(await container1.getAll());
 })()
+})
+
+app.get('/productRandom', (req, res) => {
+  const randomId = Math.floor(Math.random() * (3) + 1);
+  (async () => {
+    res.json(await container1.getById(randomId))
+  })()
+})
+
+app.listen(port, (error) => {
+    if(!error) {
+        console.log(`Server started on port ${port}`)
+    } else {
+        console.log(`Error: ${error}`)
+    }
+})
+
+
+
+
