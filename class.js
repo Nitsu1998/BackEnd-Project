@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-class Container {
+class Products {
   constructor(fileName) {
     this.fileName = fileName;
   }
@@ -10,7 +10,7 @@ class Container {
       const id = data.length + 1;
       data.push({ id: id, ...newProduct });
       await fs.promises.writeFile(`./${this.fileName}`, JSON.stringify(data));
-      return (`Added Product N°: ${id}`);
+      return ({message: `Product added id: ${id}`});
     } catch (err) {
       console.log(err);
     }
@@ -21,7 +21,9 @@ class Container {
         await fs.promises.readFile(`./${this.fileName}`, "utf-8")
       );
       const product = data.find((product) => product.id === id);
-      if (product.deleted || !product) {
+      if (product?.deleted) {
+        return {message: 'This product has the information deleted'};
+      } else if(!product) {
         return null;
       } else {
         return (product);
@@ -36,6 +38,31 @@ class Container {
       return (JSON.parse(data));
     } catch (err) {
       console.log(err);
+    }
+  }
+  async updateById(id, infoToUpdate) {
+    try {
+      let data = JSON.parse(
+        await fs.promises.readFile(`./${this.fileName}`, "utf-8")
+      );
+      const product = data.find((product) => product.id === id);
+      if(!product) {
+        return null;
+      } else {
+        let productsUpdate = []
+        const { title, price, img } = infoToUpdate
+        data.forEach((element) => {
+          if(element.id === id) {
+            productsUpdate.push({id, title, price, img })
+          } else {
+            productsUpdate.push(element)
+          }
+        })
+        await fs.promises.writeFile(`./${this.fileName}`, JSON.stringify(productsUpdate));
+        return({message: `Product updated id: ${id}`})
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
   async deleteById(id) {
@@ -68,37 +95,5 @@ class Container {
   }
 }
 
-const container1 = new Container("products.txt");
-
-const express = require("express")
-const app = express()
-const port = 8080
-
-app.get('/', (req, res) => {
-    res.send('Home')
-})
-
-app.get('/products', (req, res) => {
-  (async () => {
-    res.json(await container1.getAll());
-})()
-})
-
-app.get('/productRandom', (req, res) => {
-  const randomId = Math.floor(Math.random() * (3) + 1);
-  (async () => {
-    res.json(await container1.getById(randomId))
-  })()
-})
-
-app.listen(port, (error) => {
-    if(!error) {
-        console.log(`Server started on port ${port}`)
-    } else {
-        console.log(`Error: ${error}`)
-    }
-})
-
-
-
+module.exports = Products
 
