@@ -11,10 +11,13 @@ html(lang="en")
                 type="submit" 
             value="Add Product"
             )
-        div(style={display: 'flex', padding: '1rem'} )
-            each val in products
-                div(style={padding: '1rem'})
-                    h1 Product N°: #{val.id}
-                    p Title: #{val.title}
-                    p Price: #{val.price}
-                    img(src=val.img, style={width: '200px'})
+        if (products.length === 0)
+            h1 No Products
+        else 
+            div(style={display: 'flex', padding: '1rem'} )
+                each val in products
+                    div(style={padding: '1rem'})
+                        h1 Product N°: #{val.id}
+                        p Title: #{val.title}
+                        p Price: #{val.price}
+                        img(src=val.img, style={width: '200px'})
