@@ -6,11 +6,13 @@ class Products {
   }
   async save(newProduct) {
     try {
-      let data = JSON.parse(await fs.promises.readFile(`./${this.fileName}`, "utf-8"));
+      let data = JSON.parse(
+        await fs.promises.readFile(`./${this.fileName}`, "utf-8")
+      );
       const id = data.length + 1;
       data.push({ id: id, ...newProduct });
       await fs.promises.writeFile(`./${this.fileName}`, JSON.stringify(data));
-      return ({message: `Product added id: ${id}`});
+      return { message: `Product added id: ${id}` };
     } catch (err) {
       console.log(err);
     }
@@ -22,11 +24,11 @@ class Products {
       );
       const product = data.find((product) => product.id === id);
       if (product?.deleted) {
-        return {message: 'This product has the information deleted'};
-      } else if(!product) {
+        return { message: "This product has the information deleted" };
+      } else if (!product) {
         return null;
       } else {
-        return (product);
+        return product;
       }
     } catch (err) {
       console.log(err);
@@ -35,7 +37,7 @@ class Products {
   async getAll() {
     try {
       const data = await fs.promises.readFile(`./${this.fileName}`, "utf-8");
-      return (JSON.parse(data));
+      return JSON.parse(data);
     } catch (err) {
       console.log(err);
     }
@@ -46,23 +48,26 @@ class Products {
         await fs.promises.readFile(`./${this.fileName}`, "utf-8")
       );
       const product = data.find((product) => product.id === id);
-      if(!product) {
+      if (!product) {
         return null;
       } else {
-        let productsUpdate = []
-        const { title, price, img } = infoToUpdate
+        let productsUpdate = [];
+        const { title, price, img } = infoToUpdate;
         data.forEach((element) => {
-          if(element.id === id) {
-            productsUpdate.push({id, title, price, img })
+          if (element.id === id) {
+            productsUpdate.push({ id, title, price, img });
           } else {
-            productsUpdate.push(element)
+            productsUpdate.push(element);
           }
-        })
-        await fs.promises.writeFile(`./${this.fileName}`, JSON.stringify(productsUpdate));
-        return({message: `Product updated id: ${id}`})
+        });
+        await fs.promises.writeFile(
+          `./${this.fileName}`,
+          JSON.stringify(productsUpdate)
+        );
+        return { message: `Product updated id: ${id}` };
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
   async deleteById(id) {
@@ -75,7 +80,7 @@ class Products {
         if (element.id !== id) {
           productUpdate.push(element);
         } else {
-          productUpdate.push({id: id, deleted: true})
+          productUpdate.push({ id: id, deleted: true });
         }
       });
       await fs.promises.writeFile(
@@ -95,5 +100,6 @@ class Products {
   }
 }
 
-module.exports = Products
+const product1 = new Products("products.txt");
 
+module.exports = product1;

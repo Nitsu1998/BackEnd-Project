@@ -7,18 +7,21 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/api/products" method="POST">
+    <a href="/products">
+        <input type="submit" value="Show Products">
+    </a>
+    <form action="/products" method="post">
         <h2>Add Product</h2>
         <span>Title:</span>
-        <input type="text" name="title" placeholder="title">
-        <br>
+        <input type="text" name="title" />
+        <br /><br />
         <span>Price:</span>
-        <input type="number" name="price" placeholder="0">
-        <br>
+        <input type="number" name="price" />
+        <br /><br />
         <span>Url:</span>
-        <input type="text" name="img" placeholder="Url">
-        <br>
-        <input type="submit" value="Send">
+        <input type="text" name="img" />
+        <br /><br />
+        <input type="submit" value="Send" />
     </form>
 </body>
 </html>

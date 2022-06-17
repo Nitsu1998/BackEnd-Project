@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="/">
+        <input type="submit" value="Add Product">
+    </a>
+    <div style="display: flex; padding: 1rem">
+        <% products.forEach(function(product){ 
+            %>
+                <div style="padding: 1rem;">
+                    <h1>Product N°: <%= product.id %></h1>
+                    <p>Title: <%= product.title %></p>
+                    <p>Price: <%= product.price %></p>
+                    <img src='<%= product.img %>' style="width: 200px;">
+                </div>
+            <%}) 
+        %>
+    </div>
+</body>
+</html>

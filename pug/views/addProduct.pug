@@ -1,0 +1,43 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Document
+    body
+        a(href="/products") 
+            input(
+                type="submit" 
+            value="Show Products"
+            )
+        form(
+            action="/products" 
+            method="post"
+            )
+                h2 Add Product
+                span Title: 
+                input(
+                    type="text"
+                    name="title"
+                    )
+                br
+                br 
+                span Price: 
+                input(
+                    type="number" 
+                    name="price"
+                    )
+                br
+                br 
+                span Url: 
+                input(
+                    type="text"
+                    name="img"
+                    )
+                br
+                br 
+                input(
+                    type="submit"
+                    value="Send"
+                    )
