@@ -1,7 +1,6 @@
 import product1 from "../classProducts.js";
 
 class ProductsController {
-  constructor() {}
   async getProductsController(req, res) {
     try {
       const products = await product1.getAll();
@@ -39,12 +38,16 @@ class ProductsController {
       }
       const product = await product1.getById(id);
       if (product) {
-        res.status(200).json(product);
-      } else if (!product) {
-        res.status(404).json({ error: "Product not exist" });
-      } else {
-        res.status(204).json(product.message);
-      }
+        return(
+          res.status(200).json(product)
+        )
+      } 
+      if (!product) {
+        return(
+          res.status(404).json({ error: "Product not exist" })
+        )
+      } 
+      return (res.status(204).json(product.message))
     } catch {
       res.sendStatus(500);
     }
@@ -59,10 +62,12 @@ class ProductsController {
       }
       const response = await product1.updateById(id, req.body);
       if (response) {
-        res.status(200).json(response);
-      } else {
-        res.status(404).json({ error: "Product not found" });
-      }
+        return(
+          res.status(200).json(response)
+        )
+      } 
+      return(res.status(404).json({ error: "Product not found" }))
+      
     } catch {
       res.sendStatus(500);
     }
@@ -75,7 +80,9 @@ class ProductsController {
         res.status(400).json({ error: "The parameter is not a number" });
         return;
       }
-      res.status(200).json(await product1.deleteById(id));
+      return(
+        res.status(200).json(await product1.deleteById(id))
+      )
     } catch {
       res.sendStatus(500);
     }

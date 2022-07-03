@@ -1,7 +1,6 @@
 import { promises } from "fs";
 
 class Cart {
-  constructor() {}
   async save(newCart) {
     try {
       let data = JSON.parse(await promises.readFile("./carts.txt", "utf-8"));
@@ -13,6 +12,7 @@ class Cart {
       console.log(err);
     }
   }
+
   async deleteById(id) {
     try {
       let cartsUpdate = [];
@@ -29,6 +29,7 @@ class Cart {
       console.log(err);
     }
   }
+
   async getProductsInCartById(idCart) {
     let data = JSON.parse(await promises.readFile("./carts.txt", "utf-8"));
     const cart = data.find((cart) => cart.id === idCart);
@@ -40,6 +41,7 @@ class Cart {
       return cart.products;
     }
   }
+
   async addProduct(idCart, product) {
     let cartsUpdate = [];
     let data = JSON.parse(await promises.readFile("./carts.txt", "utf-8"));
@@ -53,41 +55,37 @@ class Cart {
         if (element.id !== idCart) {
           cartsUpdate.push(element);
         } else {
-          cart.products.push(product)
+          cart.products.push(product);
           cartsUpdate.push(cart);
         }
       });
       promises.writeFile("./carts.txt", JSON.stringify(cartsUpdate));
-      return({message: `Added product to cart` })
+      return { message: `Added product to cart` };
     }
   }
+
   async deleteProductFromCart(idCart, idProduct) {
-    let cartsUpdate = [];
+
+    const productsUpdate = []
     let data = JSON.parse(await promises.readFile("./carts.txt", "utf-8"));
     const cart = data.find((cart) => cart.id === idCart);
+    const productsInCart = cart.products
+
     if (cart?.deleted) {
       return { message: "This cart has the information deleted" };
-    } else if (!cart) {
-      return { message: "Cart not exist" };
-    } else {
-      data.forEach((element) => {
-        if (element.id !== idCart) {
-          cartsUpdate.push(element);
-        } else {
-          const productsUpdate = []
-          const productsOnCart = element.products
-          productsOnCart.forEach((element) => {
-            if (element.id !== idProduct) {
-              productsUpdate.push(element);
-            }
-          });
-          cart.products = productsUpdate
-          cartsUpdate.push(cart)
-        }
-      });
-      promises.writeFile("./carts.txt", JSON.stringify(cartsUpdate));
-      return({message: `Deleted product with id: ${idProduct} in cart with id: ${idCart}` })
     }
+    if (!cart) {
+      return { message: "Cart not exist" };
+    }
+
+    productsInCart.forEach((product) => {
+      if(product.id !== idProduct) {
+        productsUpdate.push(product)
+      }
+    })
+    data[idCart-1].products = productsUpdate
+    promises.writeFile("./carts.txt", JSON.stringify(data));
+    return ({message: `Deleted product with id: ${idProduct} in cart with id: ${idCart}`});
   }
 }
 
