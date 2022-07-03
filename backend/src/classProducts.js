@@ -1,4 +1,4 @@
-const fs = require("fs");
+import { promises } from "fs";
 
 class Products {
   constructor(fileName) {
@@ -7,11 +7,11 @@ class Products {
   async save(newProduct) {
     try {
       let data = JSON.parse(
-        await fs.promises.readFile(`./${this.fileName}`, "utf-8")
+        await promises.readFile(`./${this.fileName}`, "utf-8")
       );
       const id = data.length + 1;
       data.push({ id: id, ...newProduct });
-      await fs.promises.writeFile(`./${this.fileName}`, JSON.stringify(data));
+      await promises.writeFile(`./${this.fileName}`, JSON.stringify(data));
       return { message: `Product added with id: ${id}` };
     } catch (err) {
       console.log(err);
@@ -20,7 +20,7 @@ class Products {
   async getById(id) {
     try {
       let data = JSON.parse(
-        await fs.promises.readFile(`./${this.fileName}`, "utf-8")
+        await promises.readFile(`./${this.fileName}`, "utf-8")
       );
       const product = data.find((product) => product.id === id);
       if (product?.deleted) {
@@ -36,7 +36,7 @@ class Products {
   }
   async getAll() {
     try {
-      const data = await fs.promises.readFile(`./${this.fileName}`, "utf-8");
+      const data = await promises.readFile(`./${this.fileName}`, "utf-8");
       return JSON.parse(data);
     } catch (err) {
       console.log(err);
@@ -45,7 +45,7 @@ class Products {
   async updateById(id, infoToUpdate) {
     try {
       let data = JSON.parse(
-        await fs.promises.readFile(`./${this.fileName}`, "utf-8")
+        await promises.readFile(`./${this.fileName}`, "utf-8")
       );
       const product = data.find((product) => product.id === id);
       if (!product) {
@@ -60,7 +60,7 @@ class Products {
             productsUpdate.push(element);
           }
         });
-        await fs.promises.writeFile(
+        await promises.writeFile(
           `./${this.fileName}`,
           JSON.stringify(productsUpdate)
         );
@@ -74,7 +74,7 @@ class Products {
     try {
       let productUpdate = [];
       let data = JSON.parse(
-        await fs.promises.readFile(`./${this.fileName}`, "utf-8")
+        await promises.readFile(`./${this.fileName}`, "utf-8")
       );
       data.forEach((element) => {
         if (element.id !== id) {
@@ -83,7 +83,7 @@ class Products {
           productUpdate.push({ id: id, deleted: true });
         }
       });
-      await fs.promises.writeFile(
+      await promises.writeFile(
         `./${this.fileName}`,
         JSON.stringify(productUpdate)
       );
@@ -93,7 +93,7 @@ class Products {
   }
   async deleteAll() {
     try {
-      await fs.promises.writeFile(`./${this.fileName}`, JSON.stringify([]));
+      await promises.writeFile(`./${this.fileName}`, JSON.stringify([]));
     } catch (err) {
       console.log(err);
     }
@@ -102,4 +102,4 @@ class Products {
 
 const product1 = new Products("products.txt");
 
-module.exports = product1;
+export default product1;

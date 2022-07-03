@@ -1,13 +1,13 @@
-const fs = require("fs");
+import { promises } from "fs";
 
 class Cart {
   constructor() {}
   async save(newCart) {
     try {
-      let data = JSON.parse(await fs.promises.readFile("./carts.txt", "utf-8"));
+      let data = JSON.parse(await promises.readFile("./carts.txt", "utf-8"));
       const id = data.length + 1;
       data.push({ id: id, ...newCart });
-      await fs.promises.writeFile("./carts.txt", JSON.stringify(data));
+      await promises.writeFile("./carts.txt", JSON.stringify(data));
       return { message: `Cart created with id: ${id}` };
     } catch (err) {
       console.log(err);
@@ -16,7 +16,7 @@ class Cart {
   async deleteById(id) {
     try {
       let cartsUpdate = [];
-      let data = JSON.parse(await fs.promises.readFile("./carts.txt", "utf-8"));
+      let data = JSON.parse(await promises.readFile("./carts.txt", "utf-8"));
       data.forEach((element) => {
         if (element.id !== id) {
           cartsUpdate.push(element);
@@ -24,13 +24,13 @@ class Cart {
           cartsUpdate.push({ id: id, deleted: true });
         }
       });
-      await fs.promises.writeFile("./carts.txt", JSON.stringify(cartsUpdate));
+      await promises.writeFile("./carts.txt", JSON.stringify(cartsUpdate));
     } catch (err) {
       console.log(err);
     }
   }
   async getProductsInCartById(idCart) {
-    let data = JSON.parse(await fs.promises.readFile("./carts.txt", "utf-8"));
+    let data = JSON.parse(await promises.readFile("./carts.txt", "utf-8"));
     const cart = data.find((cart) => cart.id === idCart);
     if (cart?.deleted) {
       return { message: "This cart has the information deleted" };
@@ -42,7 +42,7 @@ class Cart {
   }
   async addProduct(idCart, product) {
     let cartsUpdate = [];
-    let data = JSON.parse(await fs.promises.readFile("./carts.txt", "utf-8"));
+    let data = JSON.parse(await promises.readFile("./carts.txt", "utf-8"));
     const cart = data.find((cart) => cart.id === idCart);
     if (cart?.deleted) {
       return { message: "This cart has the information deleted" };
@@ -57,13 +57,13 @@ class Cart {
           cartsUpdate.push(cart);
         }
       });
-      fs.promises.writeFile("./carts.txt", JSON.stringify(cartsUpdate));
+      promises.writeFile("./carts.txt", JSON.stringify(cartsUpdate));
       return({message: `Added product to cart` })
     }
   }
   async deleteProductFromCart(idCart, idProduct) {
     let cartsUpdate = [];
-    let data = JSON.parse(await fs.promises.readFile("./carts.txt", "utf-8"));
+    let data = JSON.parse(await promises.readFile("./carts.txt", "utf-8"));
     const cart = data.find((cart) => cart.id === idCart);
     if (cart?.deleted) {
       return { message: "This cart has the information deleted" };
@@ -85,7 +85,7 @@ class Cart {
           cartsUpdate.push(cart)
         }
       });
-      fs.promises.writeFile("./carts.txt", JSON.stringify(cartsUpdate));
+      promises.writeFile("./carts.txt", JSON.stringify(cartsUpdate));
       return({message: `Deleted product with id: ${idProduct} in cart with id: ${idCart}` })
     }
   }
@@ -93,4 +93,4 @@ class Cart {
 
 const cart1 = new Cart();
 
-module.exports = cart1;
+export default cart1;

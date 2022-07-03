@@ -1,11 +1,11 @@
-const express = require("express");
+import express, { json, urlencoded } from "express";
+import routes from "./routes/index.js";
+import config from "./config/config.js";
 const app = express();
-const routes = require("./routes/index");
-const config = require("./config/config");
 const port = config.PORT;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(json());
+app.use(urlencoded({ extended: true }));
 
 app.use("/api", routes);
 

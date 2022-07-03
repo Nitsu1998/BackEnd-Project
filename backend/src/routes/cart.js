@@ -1,17 +1,11 @@
-const { Router } = require("express");
+import { Router } from "express";
+import cartController  from "../controllers/cartController.js";
 const router = Router();
-const {
-  createCartController,
-  deleteCartController,
-  getProductsInCartByIdController,
-  postProductInCartByIdController,
-  deleteProductInCartByIdController,
-} = require("../controllers/cartController");
 
-router.post("/", createCartController);
-router.delete("/:id", deleteCartController);
-router.get("/:id/products", getProductsInCartByIdController);
-router.post("/:id/products", postProductInCartByIdController);
-router.delete("/:id/products/:id_prod", deleteProductInCartByIdController)
+router.post("/", cartController.createCartController);
+router.delete("/:id", cartController.deleteCartController);
+router.get("/:id/products", cartController.getProductsInCartByIdController);
+router.post("/:id/products", cartController.postProductInCartByIdController);
+router.delete("/:id/products/:id_prod", cartController.deleteProductInCartByIdController)
 
-module.exports = router;
+export default router;
