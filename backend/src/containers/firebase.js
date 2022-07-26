@@ -88,7 +88,7 @@ class Firebase {
   async addProductToCart(idCart, product) {
     try {
       let snapshot = this.collection.doc(idCart)
-      snapshot = await snapshot.update({products: admin.firestore.FieldValue.arrayUnion(product)})
+      await snapshot.update({products: admin.firestore.FieldValue.arrayUnion(product)})
       return { message: "Product Added" }
     } catch (err) {
       console.log(err);
@@ -98,7 +98,7 @@ class Firebase {
   async deleteProductFromCart(idCart, product) {
     try {
       let snapshot = this.collection.doc(idCart)
-      snapshot = await snapshot.update({products: admin.firestore.FieldValue.arrayRemove(product)})
+      await snapshot.update({products: admin.firestore.FieldValue.arrayRemove(product)})
       return { message: "Product removed from cart" }
     } catch (err) {
       console.log(err);
