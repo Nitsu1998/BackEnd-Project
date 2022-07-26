@@ -1,12 +1,11 @@
-import cart1 from "../classCart.js";
-import product1 from "../classProducts.js";
+import { CartDao, ProductDao } from "../daos/index.js";
 
 class CartController {
+
   async createCartController(req, res) {
     try {
-      const cart = { timestamp: Date.now(), products: [] };
-      const response = await cart1.save(cart);
-      return res.status(201).json(response);
+      await CartDao.save()
+      return res.sendStatus(201);
     } catch {
       res.sendStatus(500);
     }
@@ -14,13 +13,11 @@ class CartController {
 
   async deleteCartController(req, res) {
     try {
-      const id = Number(req.params.id);
-      if (isNaN(id)) {
-        res.status(400).json({ error: "The parameter is not a number" });
-        return;
+      const response = await CartDao.deleteById(req.params.id)
+      if(response?.message) {
+        return res.status(200).json(response)
       }
-      await cart1.deleteById(id);
-      return res.status(200).json({ message: `Cart deleted with id: ${id}` });
+      return res.status(404).json(response)
     } catch {
       res.sendStatus(500);
     }
@@ -28,11 +25,7 @@ class CartController {
 
   async getProductsInCartByIdController(req, res) {
     try {
-      const id = Number(req.params.id);
-      if (isNaN(id)) {
-        return res.status(400).json({ error: "The parameter is not a number" });
-      }
-      const response = await cart1.getProductsInCartById(id);
+      const response = await CartDao.getProductsInCartById(req.params.id);
       return res.status(200).json(response);
     } catch {
       res.sendStatus(500);
@@ -41,20 +34,14 @@ class CartController {
 
   async postProductInCartByIdController(req, res) {
     try {
-      const idCart = Number(req.params.id);
-      const idProduct = Number(req.body.id);
-      if (isNaN(idCart) || isNaN(idProduct)) {
-        return res.status(400).json({ error: "The parameter is not a number" });
-      }
-      const product = await product1.getById(idProduct);
-      if (product) {
-        const response = await cart1.addProduct(idCart, product);
+      const productToAdd = await ProductDao.getById(req.body.id);
+      if (productToAdd) {
+        const response = await CartDao.addProductToCart(req.params.id, productToAdd);
         return res.status(200).json(response);
       }
       if (!product) {
         return res.status(404).json({ error: "Product not exist" });
       }
-      return res.status(204).json(product.message);
     } catch {
       res.sendStatus(500);
     }
@@ -62,12 +49,8 @@ class CartController {
 
   async deleteProductInCartByIdController(req, res) {
     try {
-      const idCart = Number(req.params.id);
-      const idProduct = Number(req.params.id_prod);
-      if (isNaN(idCart) || isNaN(idProduct)) {
-        return res.status(400).json({ error: "The parameter is not a number" });
-      }
-      const response = await cart1.deleteProductFromCart(idCart, idProduct);
+      const productToDelete = await ProductDao.getById(req.params.id_prod);
+      const response = await CartDao.deleteProductFromCart(req.params.id, productToDelete);
       return res.status(200).json(response);
     } catch {
       res.sendStatus(500);

@@ -2,7 +2,7 @@ import express, { json, urlencoded } from "express";
 import routes from "./routes/index.js";
 import config from "./config/config.js";
 const app = express();
-const port = config.PORT;
+const port = config.PORT ;
 
 app.use(json());
 app.use(urlencoded({ extended: true }));

@@ -1,1 +1,0 @@
-[{"id":1,"timestamp":1656801053060,"title":"minecraft","description":"juego de cubos","code":"#fg5eth5g4g","img":"ulr","price":"55","stock":"2"},{"id":2,"timestamp":1656804091059,"title":"dbd","description":"asesinos","code":"d56gh41d65h","img":"ulr","price":"20","stock":"10"}]

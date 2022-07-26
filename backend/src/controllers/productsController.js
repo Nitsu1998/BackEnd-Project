@@ -1,10 +1,12 @@
-import product1 from "../classProducts.js";
+import { ProductDao } from "../daos/index.js";
+
 
 class ProductsController {
+
   async getProductsController(req, res) {
     try {
-      const products = await product1.getAll();
-      res.json(products);
+      const products = await ProductDao.getAll();
+      return res.json(products);
     } catch {
       res.sendStatus(500);
     }
@@ -12,18 +14,8 @@ class ProductsController {
 
   async postProductController(req, res) {
     try {
-      const { title, description, code, price, img, stock } = req.body;
-      const product = {
-        timestamp: Date.now(),
-        title,
-        description,
-        code,
-        img,
-        price,
-        stock,
-      };
-      await product1.save(product);
-      res.sendStatus(201);
+      await ProductDao.save(req.body)
+      return res.sendStatus(201);
     } catch {
       res.sendStatus(500);
     }
@@ -31,12 +23,7 @@ class ProductsController {
 
   async getByIdController(req, res) {
     try {
-      const id = Number(req.params.id);
-      if (isNaN(id)) {
-        res.status(400).json({ error: "The parameter is not a number" });
-        return;
-      }
-      const product = await product1.getById(id);
+      const product = await ProductDao.getById(req.params.id)
       if (product) {
         return(
           res.status(200).json(product)
@@ -55,19 +42,11 @@ class ProductsController {
 
   async updateByIdController(req, res) {
     try {
-      const id = Number(req.params.id);
-      if (isNaN(id)) {
-        res.status(400).json({ error: "The parameter is not a number" });
-        return;
+      const response = await ProductDao.updateById(req.params.id, req.body);
+      if(response?.message) {
+        return res.status(200).json(response)
       }
-      const response = await product1.updateById(id, req.body);
-      if (response) {
-        return(
-          res.status(200).json(response)
-        )
-      } 
-      return(res.status(404).json({ error: "Product not found" }))
-      
+      return res.status(404).json(response)
     } catch {
       res.sendStatus(500);
     }
@@ -75,14 +54,11 @@ class ProductsController {
 
   async deleteByIdController(req, res) {
     try {
-      const id = Number(req.params.id);
-      if (isNaN(id)) {
-        res.status(400).json({ error: "The parameter is not a number" });
-        return;
+      const response = await ProductDao.deleteById(req.params.id) 
+      if(response?.message) {
+        return res.status(200).json(response)
       }
-      return(
-        res.status(200).json(await product1.deleteById(id))
-      )
+      return res.status(404).json(response)
     } catch {
       res.sendStatus(500);
     }
