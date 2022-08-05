@@ -1,5 +1,6 @@
 import { ProductDao } from "../daos/index.js";
-
+import { faker } from '@faker-js/faker'
+faker.locale = 'en'
 
 class ProductsController {
 
@@ -63,8 +64,28 @@ class ProductsController {
       res.sendStatus(500);
     }
   }
+  
+  async getRandomProductsController(req, res) {
+    try{
+      const products = []
+      for (let i = 0; i <= 4; i++) {
+        products.push ({
+          name: faker.commerce.productName(),
+          price: faker.commerce.price(0, 1000, 0, '$'),
+          description: faker.commerce.productDescription(),
+          image: faker.image.imageUrl('product'),
+          code: '#' + faker.random.alphaNumeric(7),
+          stock: faker.commerce.price(0, 100, 0),
+          timestamp: faker.date.recent(10).getTime()
+        })
+      }
+      return res.status(200).json(products)
+    }catch(err){
+      console.log(err)
+    }
+  }
+  
 }
-
 const productController = new ProductsController();
 
 export default productController;

@@ -1,4 +1,4 @@
-import Mongo from "../../containers/mongo.js";
+import Mongo from "../../services/mongo.js";
 
 const generateRandom = () => {
   return "#" + (Math.random() + 1).toString(36).substring(4);

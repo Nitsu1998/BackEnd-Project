@@ -10,7 +10,7 @@ app.use(urlencoded({ extended: true }));
 app.use("/api", routes);
 
 app.get('*', (req, res) => {
-  res.status(404).json({message: "This route dosent exist"})
+  res.status(404).json({message: "This route doesn't exist"})
 })
 
 app.listen(port, (error) => {

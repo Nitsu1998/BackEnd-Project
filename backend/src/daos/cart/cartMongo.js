@@ -1,4 +1,4 @@
-import Mongo from "../../containers/mongo.js";
+import Mongo from "../../services/mongo.js";
 
 class CartMongo extends Mongo {
   constructor() {
