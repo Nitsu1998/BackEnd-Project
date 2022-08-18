@@ -1,4 +1,4 @@
-import { ProductDao } from "../daos/index.js";
+import { ProductDao } from "../models/index.js";
 import { faker } from '@faker-js/faker'
 faker.locale = 'en'
 

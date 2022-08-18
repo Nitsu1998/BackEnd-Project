@@ -1,4 +1,4 @@
-import { MessageDao } from "../daos/index.js";
+import { MessageDao } from "../models/index.js";
 import { normalize, schema } from 'normalizr'
 
 class MessagesController {

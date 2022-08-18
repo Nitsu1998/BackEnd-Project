@@ -4,16 +4,16 @@ import productsTest from "./productsTest.js";
 import cart from "./cart.js";
 import messages from "./messages.js";
 import authController from "../controllers/authController.js";
-import { SessionDao } from "../daos/index.js";
+import { SessionDao } from "../models/index.js";
 
 const router = Router();
 
 router.post("/login", authController.registerController);
 
 router.use(async function middlewareSession(req, res, next) {
-
-    const response = await SessionDao.getById(req.sessionID)
-    if (response !== undefined) {
+    const sessionID = req.sessionID
+    const response = await SessionDao.collection.findOne({sessionID})
+    if (response) {
         return next()
     } 
     return res.status(401).json({ message: "Please login" }); 

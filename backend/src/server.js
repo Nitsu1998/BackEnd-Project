@@ -4,6 +4,9 @@ import config from "./config/config.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import passport from "passport";
+import { Strategy } from "passport-local";
+import { UserDao } from "./models/index.js";
 
 const app = express();
 const port = config.PORT;
@@ -17,21 +20,33 @@ app.use(
     store: MongoStore.create({
       mongoUrl: config.mongodb.connection,
       mongoOptions,
-      ttl: 60, //600 para que sean 10 minutos
+      ttl: 60,
     }),
     secret: "ecommerce",
     resave: false,
     saveUninitialized: false,
     rolling: true,
     cookie: {
-      maxAge: 60000, //600000 para que sean 10 minutos
+      httpOnly: false,
+      secure: false,
+      maxAge: 60000,
     },
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
+
+const signupStrategy = new Strategy(
+  { passReqToCallback: true },
+  async (req, username, password, done) => {
+    const existingUser = UserDao.collection.findOne({ username })
+  }
+);
+
 app.use("/", routes);
 
 app.get("*", (req, res) => {
-  res.status(404).json({ message: "This route doesn't exist" });
+  return res.status(404).json({ message: "This route doesn't exist" });
 });
 
 app.listen(port, (error) => {

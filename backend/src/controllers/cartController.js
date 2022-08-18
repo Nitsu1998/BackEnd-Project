@@ -1,4 +1,4 @@
-import { CartDao, ProductDao } from "../daos/index.js";
+import { CartDao, ProductDao } from "../models/index.js";
 
 class CartController {
 

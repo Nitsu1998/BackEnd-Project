@@ -1,5 +1,6 @@
 
 class AuthController {
+  
   async registerController(req, res) {
     req.session.user = req.body.user
     res.send(`Bienvenido ${req.body.user}`)
