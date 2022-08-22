@@ -2,18 +2,29 @@
 class AuthController {
   
   async registerController(req, res) {
-    req.session.user = req.body.user
-    res.send(`Bienvenido ${req.body.user}`)
+    res.send(`Welcome ${req.body.username}`)
+  }
+
+  async failRegisterController(req, res) {
+    res.json({message: 'Fail to register'})
+  }
+
+  async loginController(req, res) {
+    const user = req.user
+    res.json({message: `Welcome ${user.username}`, info: user})
+  }
+
+  async failLoginController(req, res) {
+    res.json({message: 'Invalid credentials'})
   }
 
   async logoutController(req, res) {
-    const user = req.session.user
-    req.session.destroy((err)=>{
-        if(!err){
-            return res.send(`See you soon, ${user}`)
-        }
-        res.status(500).json({error: err})
+    const user = req.user
+    req.logout(function(err) {
+      if (err) { return next(err); }
+      res.send(`See you soon, ${user.username}`)
     })
+    
   }
   
 }

@@ -4,19 +4,24 @@ import productsTest from "./productsTest.js";
 import cart from "./cart.js";
 import messages from "./messages.js";
 import authController from "../controllers/authController.js";
-import { SessionDao } from "../models/index.js";
+import passport from "passport";
 
 const router = Router();
 
-router.post("/login", authController.registerController);
+//Register
+router.post("/register", passport.authenticate('register', {failureRedirect: '/failRegister'}) ,authController.registerController);
+router.post("/failRegister", authController.failRegisterController);
 
+//Login
+router.post("/login", passport.authenticate('login', {failureRedirect: '/failLogin'}) ,authController.loginController)
+router.post("/failLogin", authController.failLoginController);
+
+//Middleware authenticated
 router.use(async function middlewareSession(req, res, next) {
-    const sessionID = req.sessionID
-    const response = await SessionDao.collection.findOne({sessionID})
-    if (response) {
+    if(req.isAuthenticated()){
         return next()
-    } 
-    return res.status(401).json({ message: "Please login" }); 
+    }
+    return res.status(401).json({ message: "Please login" })
 });
 
 router.post("/logout", authController.logoutController);
