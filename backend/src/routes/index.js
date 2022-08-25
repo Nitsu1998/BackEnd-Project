@@ -5,8 +5,16 @@ import cart from "./cart.js";
 import messages from "./messages.js";
 import authController from "../controllers/authController.js";
 import passport from "passport";
+import infoController from "../controllers/infoController.js";
+import randomNumbersController from "../controllers/randomNumbersController.js";
 
 const router = Router();
+
+//Info proyect
+router.get("/info", infoController.getInfoController)
+
+//Random numbers
+router.get("/api/randoms", randomNumbersController.getRandomNumbers)
 
 //Register
 router.post("/register", passport.authenticate('register', {failureRedirect: '/failRegister'}) ,authController.registerController);
@@ -24,13 +32,17 @@ router.use(async function middlewareSession(req, res, next) {
     return res.status(401).json({ message: "Please login" })
 });
 
+//Logout
 router.post("/logout", authController.logoutController);
 
+//Products
 router.use("/api/products", products);
 router.use("/api/products-test", productsTest);
 
+//Cart
 router.use("/api/cart", cart);
 
+//Messages
 router.use("/api/messages", messages);
 
 export default router;

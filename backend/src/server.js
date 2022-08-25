@@ -10,14 +10,13 @@ import { hashPassword, isValidPassword } from "./helpers/helpers.js";
 
 const app = express();
 const port = config.PORT;
-const mongoOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   session({
-    secret: "ecommerce",
+    secret: config.SESSION_PASSWORD,
     resave: false,
     saveUninitialized: false,
     rolling: true,

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(config.mongodb.connection);
+    await mongoose.connect(config.DB_URL);
   } catch (err) {
     console.log(err);
   }
