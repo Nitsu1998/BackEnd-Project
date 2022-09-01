@@ -17,11 +17,11 @@ router.get("/info", infoController.getInfoController)
 router.get("/api/randoms", randomNumbersController.getRandomNumbers)
 
 //Register
-router.post("/register", passport.authenticate('register', {failureRedirect: '/failRegister'}) ,authController.registerController);
+router.post("/register", passport.authenticate('register', {failureRedirect: '/failRegister'}), authController.registerController);
 router.post("/failRegister", authController.failRegisterController);
 
 //Login
-router.post("/login", passport.authenticate('login', {failureRedirect: '/failLogin'}) ,authController.loginController)
+router.post("/login", passport.authenticate('login', {failureRedirect: '/failLogin'}), authController.loginController)
 router.post("/failLogin", authController.failLoginController);
 
 //Middleware authenticated

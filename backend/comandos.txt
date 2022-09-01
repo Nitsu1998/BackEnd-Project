@@ -1,0 +1,4 @@
+pm2 start ./src/server.js --watch 8081 FORK
+pm2 start ./src/server.js --watch 8081 CLUSTER
+
+forever start ./src/server.js
