@@ -1,5 +1,7 @@
 import { ProductDao } from "../models/index.js";
 import { faker } from '@faker-js/faker'
+import logger from "../helpers/logger.js";
+
 faker.locale = 'en'
 
 class ProductsController {
@@ -9,6 +11,7 @@ class ProductsController {
       const products = await ProductDao.getAll();
       return res.json(products);
     } catch {
+      logger.error(err)
       res.sendStatus(500);
     }
   }
@@ -18,6 +21,7 @@ class ProductsController {
       await ProductDao.save(req.body)
       return res.sendStatus(201);
     } catch {
+      logger.error(err)
       res.sendStatus(500);
     }
   }
@@ -37,6 +41,7 @@ class ProductsController {
       } 
       return (res.status(204).json(product.message))
     } catch {
+      logger.error(err)
       res.sendStatus(500);
     }
   }
@@ -49,6 +54,7 @@ class ProductsController {
       }
       return res.status(404).json(response)
     } catch {
+      logger.error(err)
       res.sendStatus(500);
     }
   }
@@ -61,6 +67,7 @@ class ProductsController {
       }
       return res.status(404).json(response)
     } catch {
+      logger.error(err)
       res.sendStatus(500);
     }
   }
@@ -81,6 +88,7 @@ class ProductsController {
       }
       return res.status(200).json(products)
     }catch(err){
+      logger.error(err)
       console.log(err)
     }
   }

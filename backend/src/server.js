@@ -6,6 +6,8 @@ import config from "./config/config.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import auth from "./helpers/passport.js";
+import compression from "compression";
+import logger from "./helpers/logger.js";
 
 const app = express();
 const port = parseInt(process.argv[2]) || config.PORT;
@@ -14,12 +16,22 @@ const mode = process.argv[3] || "FORK";
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
+app.use(compression())
 app.use(cookieParser());
 app.use(session(config.SESSION));
 auth(app)
 
+app.use((req, res, next) => {
+  logger.info(req.method)
+  logger.info(req.url)
+  next()
+})
+
 app.use("/", routes);
+
 app.get("*", (req, res) => {
+  logger.warn(req.method)
+  logger.warn(req.url)
   return res.status(404).json({ message: "This route doesn't exist" });
 });
 

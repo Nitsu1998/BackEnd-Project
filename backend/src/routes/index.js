@@ -10,21 +10,21 @@ import randomNumbersController from "../controllers/randomNumbersController.js";
 
 const router = Router();
 
-//Info proyect
+// Info proyect
 router.get("/info", infoController.getInfoController)
 
-//Random numbers
-router.get("/api/randoms", randomNumbersController.getRandomNumbers)
+// Random numbers
+// router.get("/api/randoms", randomNumbersController.getRandomNumbers)
 
-//Register
+// Register
 router.post("/register", passport.authenticate('register', {failureRedirect: '/failRegister'}), authController.registerController);
 router.post("/failRegister", authController.failRegisterController);
 
-//Login
+// Login
 router.post("/login", passport.authenticate('login', {failureRedirect: '/failLogin'}), authController.loginController)
 router.post("/failLogin", authController.failLoginController);
 
-//Middleware authenticated
+// Middleware authenticated
 router.use(async function middlewareSession(req, res, next) {
     if(req.isAuthenticated()){
         return next()
@@ -32,17 +32,17 @@ router.use(async function middlewareSession(req, res, next) {
     return res.status(401).json({ message: "Please login" })
 });
 
-//Logout
+// Logout
 router.post("/logout", authController.logoutController);
 
-//Products
+// Products
 router.use("/api/products", products);
 router.use("/api/products-test", productsTest);
 
-//Cart
+// Cart
 router.use("/api/cart", cart);
 
-//Messages
+// Messages
 router.use("/api/messages", messages);
 
 export default router;
