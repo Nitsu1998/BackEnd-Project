@@ -1,4 +1,5 @@
 import newMail from "../helpers/nodemailer.js";
+import newWhatsappMessage from "../helpers/twilio.js";
 import { CartDao, ProductDao, UserDao } from "../models/index.js";
 
 class CartController {
@@ -62,7 +63,9 @@ class CartController {
     try {
       const response = await CartDao.getProductsInCartById(req.params.id);
       const user = await UserDao.getById(req.session.passport.user)
-      await newMail(`New purchase from ${user.username} - ${user.email}`, response)
+      const subject = `New purchase from ${user.username} - ${user.email}`
+      newMail(subject, response)
+      newWhatsappMessage(subject)
       return res.sendStatus(200);
     } catch {
       res.sendStatus(500);
