@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import { UserDao } from "../models/index.js";
 import { hashPassword, isValidPassword } from "./helpers.js";
-import newMail from './nodemailer.js'
+import newMail from "./nodemailer.js";
 
 function auth(app) {
   app.use(passport.initialize());
@@ -24,10 +24,11 @@ function auth(app) {
           email: req.body.email,
           firstName: req.body.firstName,
           lastName: req.body.lastName,
+          phone: req.body.phone,
         };
 
         const createUser = await UserDao.collection.create(newUser);
-        await newMail('New Register', newUser)
+        await newMail("New Register", newUser);
 
         done(null, createUser);
       } catch (err) {
