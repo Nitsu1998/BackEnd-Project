@@ -1,11 +1,12 @@
-import { CartDao, ProductDao } from "../models/index.js";
+import newMail from "../helpers/nodemailer.js";
+import { CartDao, ProductDao, UserDao } from "../models/index.js";
 
 class CartController {
 
   async createCartController(req, res) {
     try {
-      await CartDao.save()
-      return res.sendStatus(201);
+      const response = await CartDao.save()
+      return res.status(201).json({cartId: response._id});
     } catch {
       res.sendStatus(500);
     }
@@ -56,6 +57,19 @@ class CartController {
       res.sendStatus(500);
     }
   }
+
+  async endPurchase(req, res) {
+    try {
+      const response = await CartDao.getProductsInCartById(req.params.id);
+      const user = await UserDao.getById(req.session.passport.user)
+      await newMail(`New purchase from ${user.username} - ${user.email}`, response)
+      return res.sendStatus(200);
+    } catch {
+      res.sendStatus(500);
+    }
+  }
+
+  
 }
 
 const cartController = new CartController();

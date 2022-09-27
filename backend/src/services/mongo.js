@@ -19,7 +19,7 @@ class Mongo {
     try {
       const response = await this.collection(object);
       await response.save();
-      return
+      return response
     } catch (err) {
       console.log(err);
       return
@@ -28,7 +28,7 @@ class Mongo {
 
   async getById(id) {
     try {
-      const response = await this.collection.find({ _id: id }, { __v: 0 });
+      const response = await this.collection.findById({ _id: id }, { __v: 0 });
       return response;
     } catch (err) {
       console.log(err);
@@ -76,7 +76,7 @@ class Mongo {
 
   async addProductToCart(idCart, product) {
     try {
-      await this.collection.updateOne({_id: idCart}, {$push: {products: product[0]}})
+      await this.collection.updateOne({_id: idCart}, {$push: {products: product}})
       return { message: "Product Added" }
     } catch (err) {
       console.log(err);

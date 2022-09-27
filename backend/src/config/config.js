@@ -14,4 +14,5 @@ export default {
       maxAge: 600000,
     },
   },
+  TRASNPORT_PASS: process.env.TRANSPORTER_PASS,
 };

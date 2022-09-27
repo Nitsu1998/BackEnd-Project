@@ -2,6 +2,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import { UserDao } from "../models/index.js";
 import { hashPassword, isValidPassword } from "./helpers.js";
+import newMail from './nodemailer.js'
 
 function auth(app) {
   app.use(passport.initialize());
@@ -26,6 +27,7 @@ function auth(app) {
         };
 
         const createUser = await UserDao.collection.create(newUser);
+        await newMail('New Register', newUser)
 
         done(null, createUser);
       } catch (err) {
