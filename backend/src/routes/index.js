@@ -18,11 +18,11 @@ router.get("/info", infoController.getInfoController)
 
 // Register
 router.post("/register", passport.authenticate('register', {failureRedirect: '/failRegister'}), authController.registerController);
-router.post("/failRegister", authController.failRegisterController);
+router.get("/failRegister", authController.failRegisterController);
 
 // Login
 router.post("/login", passport.authenticate('login', {failureRedirect: '/failLogin'}), authController.loginController)
-router.post("/failLogin", authController.failLoginController);
+router.get("/failLogin", authController.failLoginController);
 
 // Middleware authenticated
 router.use(async function middlewareSession(req, res, next) {

@@ -8,24 +8,23 @@ import session from "express-session";
 import auth from "./helpers/passport.js";
 import compression from "compression";
 import logger from "./helpers/logger.js";
+import cors from 'cors'
 
 const app = express();
 const port = parseInt(process.argv[2]) || config.PORT;
 const cpus = os.cpus();
 const mode = process.argv[3] || "FORK";
 
+app.use(cors({
+  origin:'http://localhost:8080',
+  methods: "GET, POST"
+}))
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(compression())
 app.use(cookieParser());
 app.use(session(config.SESSION));
 auth(app)
-
-app.use((req, res, next) => {
-  logger.info(req.method)
-  logger.info(req.url)
-  next()
-})
 
 app.use("/", routes);
 
