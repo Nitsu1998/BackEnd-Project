@@ -4,7 +4,7 @@ export default {
   PORT: process.env.PORT || 8080,
   DB_URL: process.env.DB_URL,
   CORS: {
-    origin: "*",
+    origin: "http://localhost:3000",
     methods: "GET, POST, PUT, DELETE",
   },
   SESSION: {
