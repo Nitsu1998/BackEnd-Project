@@ -15,10 +15,7 @@ const port = parseInt(process.argv[2]) || config.PORT;
 const cpus = os.cpus();
 const mode = process.argv[3] || "FORK";
 
-app.use(cors({
-  origin:'http://localhost:8080',
-  methods: "GET, POST"
-}))
+app.use(cors(config.CORS))
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(compression())

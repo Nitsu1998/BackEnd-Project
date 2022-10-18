@@ -3,6 +3,10 @@ import "dotenv/config.js";
 export default {
   PORT: process.env.PORT || 8080,
   DB_URL: process.env.DB_URL,
+  CORS: {
+    origin: "*",
+    methods: "GET, POST, PUT, DELETE",
+  },
   SESSION: {
     secret: process.env.SESSION_PASSWORD,
     resave: false,
