@@ -28,7 +28,7 @@ function auth(app) {
         };
 
         const createUser = await UserDao.collection.create(newUser);
-        await newMail("New Register", newUser);
+        //await newMail("New Register", newUser);
 
         done(null, createUser);
       } catch (err) {

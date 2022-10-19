@@ -27,8 +27,14 @@ function App() {
   }
 
   async function getProducts() {
-    const response = await axios.get("http://localhost:8080/api/products");
+    try {
+      const response = await axios.get("http://localhost:8080/api/products");
     setProducts(response.data);
+    } catch (err) {
+      setInfo(null)
+      setMessage(err.response.data.message)
+    }
+    
   }
 
   async function addProduct() {

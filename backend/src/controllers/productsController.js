@@ -9,7 +9,7 @@ class ProductsController {
   async getProductsController(req, res) {
     try {
       const products = await ProductDao.getAll();
-      return res.json(products);
+      return res.status(200).json(products);
     } catch {
       logger.error(err)
       res.sendStatus(500);

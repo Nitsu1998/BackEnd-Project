@@ -1,6 +1,6 @@
 class AuthController {
   async registerController(req, res) {
-    res.send(`Welcome ${req.body.username}`);
+    res.status(201).json(`Welcome ${req.body.username}`);
   }
 
   async failRegisterController(req, res) {
