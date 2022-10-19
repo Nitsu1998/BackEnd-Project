@@ -6,6 +6,7 @@ export default {
   CORS: {
     origin: "http://localhost:3000",
     methods: "GET, POST, PUT, DELETE",
+    credentials: true
   },
   SESSION: {
     secret: process.env.SESSION_PASSWORD,
