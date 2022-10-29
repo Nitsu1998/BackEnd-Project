@@ -1,6 +1,5 @@
 import { MessageDao } from "../models/index.js";
 import { normalize, schema } from 'normalizr'
-import logger from "../helpers/logger.js";
 
 class MessagesController {
 
@@ -24,7 +23,7 @@ class MessagesController {
 
       return res.status(200).json(normalizedMessage)
     } catch (err) {
-      logger.error(err)
+  
       console.log(err);
     }
   }
@@ -35,7 +34,6 @@ class MessagesController {
       const response = this.getMessagesController()
       return res.status(201).json(response);
     } catch (err) {
-      logger.error(err)
       console.log(err);
     }
   }

@@ -1,18 +1,18 @@
 class AuthController {
   async registerController(req, res) {
-    res.status(201).json(`Welcome ${req.body.username}`);
+    res.status(201).json(req.body.username);
   }
 
   async failRegisterController(req, res) {
-    res.json({ message: "Fail to register" });
+    res.status(403).json({ message: "User already exist" });
   }
 
   async loginController(req, res) {
-    res.json({ message: `Welcome ${req.user.username}`, info: req.user });
+    res.json(req.user);
   }
 
   async failLoginController(req, res) {
-    res.json({ message: "Invalid credentials" });
+    res.status(401).json({ message: "Invalid credentials" });
   }
 
   async logoutController(req, res) {

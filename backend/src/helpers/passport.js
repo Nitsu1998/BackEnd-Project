@@ -15,7 +15,7 @@ function auth(app) {
         const existingUser = await UserDao.collection.findOne({ username });
 
         if (existingUser) {
-          return done(null, null);
+          return done(null);
         }
 
         const newUser = {
