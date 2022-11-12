@@ -6,8 +6,17 @@ import { CartDao, ProductDao, UserDao } from "../models/index.js";
 class CartController {
   async createCartController(req, res) {
     try {
-      const response = await CartDao.save();
+      const response = await CartDao.save(req.body);
       return res.status(201).json({ cartId: response._id });
+    } catch {
+      res.sendStatus(500);
+    }
+  }
+
+  async getCartOfUserController(req, res) {
+    try {
+      const response = await CartDao.getCartOfUser(req.user._id);
+      return res.status(200).json(response[0]);
     } catch {
       res.sendStatus(500);
     }

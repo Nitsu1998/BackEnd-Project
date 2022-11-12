@@ -2,6 +2,7 @@ import { Router } from "express";
 import cartController  from "../controllers/cartController.js";
 const router = Router();
 
+router.get("/", cartController.getCartOfUserController)
 router.post("/", cartController.createCartController);
 router.delete("/:id", cartController.deleteCartController);
 router.get("/:id/products", cartController.getProductsInCartByIdController);

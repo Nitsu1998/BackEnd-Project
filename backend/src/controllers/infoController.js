@@ -13,7 +13,6 @@ class InfoController {
                 proyectFolder: process.cwd(),
                 serverProcessors: os.cpus().length,
             }
-            console.log(info)
             return res.json(info)
         }catch(err){
             console.log(err)

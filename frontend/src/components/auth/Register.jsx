@@ -6,9 +6,10 @@ import { contextUser } from "../../context/userContext";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { useRef } from "react";
 
 export default function Register() {
-  const { register, message, user } = useContext(contextUser);
+  const { register, message, handleMessage, user } = useContext(contextUser);
   const [username, setUsername] = useState();
   const [firstName, setFirstname] = useState();
   const [lastName, setLastname] = useState();
@@ -16,7 +17,7 @@ export default function Register() {
   const [phone, setPhone] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
-  const navigate = useNavigate();
+  const navigation = useRef(useNavigate());
 
   const handleRegister = async (evt) => {
     evt.preventDefault();
@@ -36,13 +37,13 @@ export default function Register() {
     });
 
     if (response) {
-      navigate("/login");
+      navigation.current("/login");
     }
   };
 
   useEffect(() => {
     if (user) {
-      navigate("/main");
+      navigation.current("/main");
     }
   }, [user]);
 
@@ -58,7 +59,7 @@ export default function Register() {
       }}
     >
       <h2 style={{ color: "white", margin: "0" }}>REGISTER</h2>
-      <span style={{ color: "red" }}>{message}</span>
+      <span style={{ color: "red", margin: "0.5rem" }}>{message}</span>
       <Form
         onSubmit={handleRegister}
         style={{
@@ -136,7 +137,7 @@ export default function Register() {
         </Form.Group>
 
         <div>
-          <Link to="/login">Already have an account? Login</Link>
+          <Link onClick={()=>handleMessage(null)} to="/login">Already have an account? Login</Link>
         </div>
 
         <Button className="mt-3" variant="primary" type="submit">

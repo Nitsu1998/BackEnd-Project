@@ -23,7 +23,6 @@ class MessagesController {
 
       return res.status(200).json(normalizedMessage)
     } catch (err) {
-  
       console.log(err);
     }
   }

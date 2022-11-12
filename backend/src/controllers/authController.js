@@ -16,11 +16,12 @@ class AuthController {
   }
 
   async logoutController(req, res) {
+    const user = req.user.username
     req.logout(function (err) {
       if (err) {
         return next(err);
       }
-      res.send(`See you soon, ${req.user.username}`);
+      res.send(`See you soon, ${user}`);
     });
   }
 }

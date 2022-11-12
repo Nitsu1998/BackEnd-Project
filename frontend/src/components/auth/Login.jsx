@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -8,10 +8,10 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 
 export default function Login() {
-  const { login, message, user } = useContext(contextUser);
-  const navigate = useNavigate();
+  const { login, message, handleMessage, user } = useContext(contextUser);
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const navigation = useRef(useNavigate());
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -23,7 +23,7 @@ export default function Login() {
 
   useEffect(() => {
     if (user) {
-      navigate("/main");
+      navigation.current("/main");
     }
   }, [user]);
 
@@ -39,7 +39,7 @@ export default function Login() {
       }}
     >
       <h2 style={{ color: "white", margin: "0" }}>LOGIN</h2>
-      <span style={{ color: "red" }}>{message}</span>
+      <span style={{ color: "red", margin: "0.5rem" }}>{message}</span>
       <Form
         onSubmit={handleSubmit}
         style={{
@@ -68,7 +68,7 @@ export default function Login() {
           />
         </Form.Group>
 
-        <Link to="/register">Don't have an account? Register</Link>
+        <Link onClick={()=>handleMessage(null)} to="/register">Don't have an account? Register</Link>
 
         <Button className="mt-3" variant="primary" type="submit">
           Login

@@ -47,7 +47,7 @@ class Mongo {
 
   async updateById(id, object) {
     try {
-      await this.collection.updateOne({ _id: id }, { $set: object });
+      await this.collection.findByIdAndUpdate({ _id: id }, { $set: object });
       return { message: "Product updated" };
     } catch (err) {
       console.log(err);
@@ -65,6 +65,15 @@ class Mongo {
     }
   }
 
+  async getCartOfUser(userId) {
+    try {
+      const response = await this.collection.find({userId})
+      return response
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async getProductsInCartById(idCart) {
     try {
       const response = await this.collection.find({_id: idCart}, {products: 1, _id: 0})
@@ -76,7 +85,7 @@ class Mongo {
 
   async addProductToCart(idCart, product) {
     try {
-      await this.collection.updateOne({_id: idCart}, {$push: {products: product}})
+      await this.collection.findByIdAndUpdate({_id: idCart}, {$push: {products: product}})
       return { message: "Product Added" }
     } catch (err) {
       console.log(err);
@@ -85,7 +94,7 @@ class Mongo {
 
   async deleteProductFromCart(idCart, product) {
     try {
-      await this.collection.updateOne({_id: idCart}, {$pull: {products: product[0]}})
+      await this.collection.findByIdAndDelete({_id: idCart}, {$pull: {products: product[0]}})
       return { message: "Product deleted from cart" }
     } catch (err) {
       console.log(err);

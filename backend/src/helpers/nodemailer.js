@@ -6,8 +6,8 @@ async function newMail(subject, info) {
     host: "smtp.ethereal.email",
     port: 587,
     auth: {
-      user: "annamae.wilkinson@ethereal.email",
-      pass: config.TRASNPORT_PASS,
+      user: "allison5@ethereal.email",
+      pass: config.TRASNPORTER_PASS,
     },
     tls: {
       rejectUnauthorized: false,
@@ -16,7 +16,7 @@ async function newMail(subject, info) {
 
   const mailOptions = {
     from: "serverNode@server.com",
-    to: "annamae.wilkinson@ethereal.email",
+    to: "allison5@ethereal.email",
     subject: subject,
     html: JSON.stringify(info),
   };
