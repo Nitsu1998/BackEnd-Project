@@ -14,6 +14,7 @@ class ProductMongo extends Mongo {
       price: { type: Number, required: true },
       stock: { type: Number, required: true },
       timestamp: { type: Number, default: new Date().getTime() },
+      amount: {type: Number, default: 1}
     });
   }
 }

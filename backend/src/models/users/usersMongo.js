@@ -9,6 +9,7 @@ class UserMongo extends Mongo {
       firstName: { type: String, required: true },
       lastName: { type: String, required: true },
       phone: { type: String, require: true },
+      isAdmin: {type: Boolean, default: false}
     });
   }
 }

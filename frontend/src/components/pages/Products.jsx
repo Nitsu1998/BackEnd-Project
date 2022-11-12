@@ -38,7 +38,7 @@ export default function Products() {
   async function createProduct(evt) {
     try {
       evt.preventDefault();
-      
+
       if (!title || !description || !url || !price || !stock) {
         return toast.error("Complete all fields", { autoClose: 2000 });
       }
@@ -56,55 +56,70 @@ export default function Products() {
         text: `${title}`,
         icon: "success",
         buttons: false,
-        timer: 2000
+        timer: 2000,
       });
-      setTitle(null)
-      setDescription(null)
-      setUrl(null)
-      setStock(null)
-      setPrice(null)
+      setTitle(null);
+      setDescription(null);
+      setUrl(null);
+      setStock(null);
+      setPrice(null);
     } catch (err) {
-      sessionExpired();
+      if (err.response.status === 403) {
+        return toast.error("Must be admin to add products", {
+          autoClose: 4000,
+        });
+      } else {
+        sessionExpired();
+      }
     }
   }
 
   async function deleteProduct(id) {
-    try {
-      swal({
-        title: "Are you sure?",
-        text: "Once deleted, you will not be able to recover this product!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
-          async function foo() {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this product!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        async function foo() {
+          try {
             await axios.delete(host + `/api/products/${id}`);
             getProducts();
+
+            swal("Poof! This product has been deleted!", {
+              icon: "success",
+              buttons: false,
+              timer: 2000,
+            });
+          } catch (err) {
+            if (err.response.status === 403) {
+              return toast.error("Must be admin to delete products", {
+                autoClose: 4000,
+              });
+            } else {
+              sessionExpired();
+            }
           }
-          foo();
-          swal("Poof! This product has been deleted!", {
-            icon: "success",
-            buttons: false,
-            timer: 2000,
-          });
-        } else {
-          swal("This product is safe!", {
-            icon: "success",
-            buttons: false,
-            timer: 2000,
-          });
         }
-      });
-    } catch (err) {
-      sessionExpired();
-    }
+        foo();
+      } else {
+        swal("This product is safe!", {
+          icon: "success",
+          buttons: false,
+          timer: 2000,
+        });
+      }
+    });
   }
 
   async function addToCart(id) {
     try {
       if (!cartId) {
-        const response = await axios.post(host + "/api/cart", {userId: user._id});
+        const response = await axios.post(host + "/api/cart", {
+          userId: user._id,
+        });
         handleCartId(response.data.cartId);
         await axios.post(host + `/api/cart/${response.data.cartId}/products`, {
           id,
@@ -140,7 +155,10 @@ export default function Products() {
           width: "100%",
         }}
       >
-        <h2 style={{ color: "white" }} className="text-center">
+        <h2
+          style={{ color: "white", paddingTop: "1rem" }}
+          className="text-center"
+        >
           PRODUCTS
         </h2>
         <div style={{ display: "flex", justifyContent: "center" }}>

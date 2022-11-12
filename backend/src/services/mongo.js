@@ -19,10 +19,10 @@ class Mongo {
     try {
       const response = await this.collection(object);
       await response.save();
-      return response
+      return response;
     } catch (err) {
       console.log(err);
-      return
+      return;
     }
   }
 
@@ -67,8 +67,8 @@ class Mongo {
 
   async getCartOfUser(userId) {
     try {
-      const response = await this.collection.find({userId})
-      return response
+      const response = await this.collection.find({ userId });
+      return response;
     } catch (err) {
       console.log(err);
     }
@@ -76,8 +76,11 @@ class Mongo {
 
   async getProductsInCartById(idCart) {
     try {
-      const response = await this.collection.find({_id: idCart}, {products: 1, _id: 0})
-      return response[0].products
+      const response = await this.collection.find(
+        { _id: idCart },
+        { products: 1, _id: 0 }
+      );
+      return response[0].products;
     } catch (err) {
       console.log(err);
     }
@@ -85,17 +88,35 @@ class Mongo {
 
   async addProductToCart(idCart, product) {
     try {
-      await this.collection.findByIdAndUpdate({_id: idCart}, {$push: {products: product}})
-      return { message: "Product Added" }
+      await this.collection.findByIdAndUpdate(
+        { _id: idCart },
+        { $push: { products: product } }
+      );
+      return { message: "Product Added" };
     } catch (err) {
       console.log(err);
     }
   }
 
-  async deleteProductFromCart(idCart, product) {
+  async editProductFromCart(idCart, product) {
     try {
-      await this.collection.findByIdAndDelete({_id: idCart}, {$pull: {products: product[0]}})
-      return { message: "Product deleted from cart" }
+      await this.collection.findByIdAndUpdate(
+        { _id: idCart, "products._id": product._id },
+        { $set: { products: product } }
+      );
+      return { message: "Product Added" };
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async deleteProductFromCart(idCart, idProduct) {
+    try {
+      const response = await this.collection.findByIdAndUpdate(
+        { _id: idCart },
+        { $pull: { products: { _id: mongoose.Types.ObjectId(idProduct) } } }
+      );
+      return response;
     } catch (err) {
       console.log(err);
     }

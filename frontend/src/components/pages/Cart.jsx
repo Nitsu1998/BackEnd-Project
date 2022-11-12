@@ -7,6 +7,7 @@ import { contextUser } from "../../context/userContext";
 import NavBar from "../Navbar";
 import { FaTrash } from "react-icons/fa";
 import axios from "axios";
+import swal from "sweetalert";
 axios.defaults.withCredentials = true;
 const host = process.env.REACT_APP_HOST_API;
 
@@ -31,7 +32,15 @@ export default function Cart() {
       const response = await axios.delete(
         host + `/api/cart/${cartId}/products/${idProd}`
       );
-      console.log(response);
+      const productDeleted = response.data.products.find((product)=>product._id === idProd)
+      swal({
+        title: "Product deleted from cart!",
+        text: `${productDeleted.title}`,
+        icon: "success",
+        buttons: false,
+        timer: 3000
+      });
+      getProductsInCart()
     } catch (error) {
       sessionExpired();
     }
@@ -57,15 +66,18 @@ export default function Cart() {
           width: "100%",
         }}
       >
+        <h2 style={{ color: "white", paddingTop:"1rem" }} className="text-center">
+          CART
+        </h2>
         <div style={{ padding: "3rem" }}>
-          {products ? (
+          {products && products.length !== 0 ? (
             products.map((product, index) => {
               return (
                 <div
                   key={index}
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "1rem 8rem 8rem 8rem 8rem",
+                    gridTemplateColumns: "1rem 5rem 5rem 5rem 5rem 5rem",
                     justifyContent: "space-around",
                     alignItems: "center",
                     padding: "1.5rem",
@@ -79,8 +91,9 @@ export default function Cart() {
                     src={product.url}
                     alt="image Product"
                   />
-                  <p>{product.title}</p>
-                  <p>Price: {product.price}$</p>
+                  <span>{product.title}</span>
+                  <span>Price: {product.price}$</span>
+                  <span>Amount: {product.amount}</span>
                   <FaTrash
                     style={{ cursor: "pointer" }}
                     onClick={() => deleteProductFromCart(product._id)}

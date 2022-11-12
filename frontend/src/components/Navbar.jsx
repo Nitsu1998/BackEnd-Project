@@ -13,7 +13,7 @@ export default function NavBar(){
           </div>
           <div>
             <span style={{color: "white", marginRight: "2rem"}}>user: {user?.email}</span>
-            <button style={{marginRight: "1rem"}} onClick={logOut}>Log out</button>
+            <button style={{marginRight: "1rem"}} onClick={()=>logOut()}>Log out</button>
           </div>
         </nav>
     )

@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import config from "../config/config.js";
 import newMail from "../helpers/nodemailer.js";
 import newWhatsappMessage from "../helpers/twilio.js";
@@ -45,16 +46,27 @@ class CartController {
 
   async postProductInCartByIdController(req, res) {
     try {
-      const productToAdd = await ProductDao.getById(req.body.id);
-      if (productToAdd) {
+      let productsInCart = await CartDao.getProductsInCartById(req.params.id);
+      let productToAdd = await ProductDao.getById(req.body.id);
+      if (!productToAdd) {
+        return res.status(404).json({ error: "Product not exist" });
+      }
+      const product = productsInCart.find(
+        (product) => product?.title === productToAdd.title
+      );
+      if (product) {
+        product.amount += 1;
+        const response = await CartDao.editProductFromCart(
+          req.params.id,
+          product
+        );
+        return res.status(200).json(response);
+      } else {
         const response = await CartDao.addProductToCart(
           req.params.id,
           productToAdd
         );
         return res.status(200).json(response);
-      }
-      if (!product) {
-        return res.status(404).json({ error: "Product not exist" });
       }
     } catch {
       res.sendStatus(500);
@@ -63,10 +75,9 @@ class CartController {
 
   async deleteProductInCartByIdController(req, res) {
     try {
-      const productToDelete = await ProductDao.getById(req.params.id_prod);
       const response = await CartDao.deleteProductFromCart(
         req.params.id,
-        productToDelete
+        req.params.id_prod
       );
       return res.status(200).json(response);
     } catch {

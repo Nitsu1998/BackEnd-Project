@@ -7,8 +7,8 @@ router.get("/", productController.getProductsController);
 router.get("/:id", productController.getByIdController);
 
 router.use(function middlewareIsAdmin(req, res, next) {
-  if (!isAdmin) {
-    return res.status(401).json({ message: "No authorization" });
+  if (!req.user.isAdmin) {
+    return res.status(403).json({ message: "not admin" });
   }
   next();
 });
