@@ -37,13 +37,13 @@ export default function Register() {
     });
 
     if (response) {
-      navigation.current("/login");
+      navigation.current("/products");
     }
   };
 
   useEffect(() => {
     if (user) {
-      navigation.current("/main");
+      navigation.current("/products");
     }
   }, [user]);
 

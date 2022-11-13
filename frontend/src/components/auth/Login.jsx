@@ -23,7 +23,7 @@ export default function Login() {
 
   useEffect(() => {
     if (user) {
-      navigation.current("/main");
+      navigation.current("/products");
     }
   }, [user]);
 
