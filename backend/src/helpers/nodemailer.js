@@ -6,7 +6,7 @@ async function newMail(subject, info) {
     host: "smtp.ethereal.email",
     port: 587,
     auth: {
-      user: "allison5@ethereal.email",
+      user: "amina18@ethereal.email",
       pass: config.TRASNPORTER_PASS,
     },
     tls: {
@@ -16,12 +16,13 @@ async function newMail(subject, info) {
 
   const mailOptions = {
     from: "serverNode@server.com",
-    to: "allison5@ethereal.email",
+    to: "amina18@ethereal.email",
     subject: subject,
     html: JSON.stringify(info),
   };
   try {
     await transporter.sendMail(mailOptions);
+    return
   } catch (err) {
     console.log(err);
   }

@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import config from "../config/config.js";
 import newMail from "../helpers/nodemailer.js";
 import newWhatsappMessage from "../helpers/twilio.js";

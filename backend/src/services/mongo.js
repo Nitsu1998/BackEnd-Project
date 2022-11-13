@@ -100,9 +100,9 @@ class Mongo {
 
   async editProductFromCart(idCart, product) {
     try {
-      await this.collection.findByIdAndUpdate(
+      await this.collection.updateOne(
         { _id: idCart, "products._id": product._id },
-        { $set: { products: product } }
+        { $set: { "products.$.amount": product.amount } }
       );
       return { message: "Product Added" };
     } catch (err) {

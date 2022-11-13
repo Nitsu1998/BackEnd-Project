@@ -14,7 +14,7 @@ class AuthController {
   async failLoginController(req, res) {
     res.status(401).json({ message: "Invalid credentials" });
   }
-
+ 
   async logoutController(req, res) {
     const user = req.user.username
     req.logout(function (err) {
