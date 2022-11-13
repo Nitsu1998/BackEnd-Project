@@ -6,7 +6,8 @@ axios.defaults.withCredentials = true;
 const host = process.env.REACT_APP_HOST_API;
 
 export default function UserContextProvider({ children }) {
-  const [user, setUser] = useState();
+  const userLocalData = JSON.parse(localStorage.getItem('user'))
+  const [user, setUser] = useState(userLocalData ? userLocalData : null);
   const [cartId, setCartId] = useState();
   const [message, setMessage] = useState(null);
 
@@ -41,6 +42,7 @@ export default function UserContextProvider({ children }) {
       setMessage(null);
       const response = await axios.post(host + "/login", userLogin);
       setUser(response.data);
+      localStorage.setItem('user', JSON.stringify(response.data))
       const response2 = await axios.get(host + "/api/cart", {
         id: response.data._id,
       });

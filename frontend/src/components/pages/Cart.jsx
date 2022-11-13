@@ -20,8 +20,12 @@ export default function Cart() {
 
   const getProductsInCart = async () => {
     try {
-      if (cartId) {
-        const response = await axios.get(host + `/api/cart/${cartId}/products`);
+      const response2 = await axios.get(host + "/api/cart", {
+        id: user._id,
+      });
+      handleCartId(response2.data?._id);
+      if (response2.data?._id) {
+        const response = await axios.get(host + `/api/cart/${response2.data?._id}/products`);
         setProducts(response.data);
       }
     } catch (error) {
