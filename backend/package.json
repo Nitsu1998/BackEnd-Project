@@ -4,8 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "test": "node ./src/helpers/benchmark.js",
-    "start": "nodemon ./src/server.js"
+    "start": "node ./src/server.js"
   },
   "keywords": [],
   "author": "",
