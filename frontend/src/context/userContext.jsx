@@ -6,8 +6,7 @@ axios.defaults.withCredentials = true;
 const host = process.env.REACT_APP_HOST_API;
 
 export default function UserContextProvider({ children }) {
-  const userLocalData = JSON.parse(localStorage.getItem('user'))
-  const [user, setUser] = useState(userLocalData ? userLocalData : null);
+  const [user, setUser] = useState(null);
   const [cartId, setCartId] = useState();
   const [message, setMessage] = useState(null);
 
