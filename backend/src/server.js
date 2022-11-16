@@ -6,10 +6,12 @@ import session from "express-session";
 import auth from "./helpers/passport.js";
 import compression from "compression";
 import cors from "cors";
+const {pathname: root} = new URL('../public', import.meta.url)
 
 const app = express();
 const port = parseInt(process.argv[2]) || config.PORT;
 
+app.use(express.static(root))
 app.use(cors(config.CORS));
 app.use(json());
 app.use(urlencoded({ extended: true }));
